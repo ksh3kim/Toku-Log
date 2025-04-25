@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminGate from './components/AdminGate';
 import AdminMode from './components/AdminMode';
 import UserMode from './components/UserMode';
+import Settings from './components/Settings';
 
 export default function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -12,11 +13,9 @@ export default function App() {
     setAuthenticated(verified);
     setIsAdmin(verified);
 
-    const settings = JSON.parse(localStorage.getItem('user_settings') || 'null');
-    if (settings) {
-      document.body.style.fontFamily = settings.fontFamily;
-      document.body.style.fontSize = settings.fontSize;
-    }
+    const settings = JSON.parse(localStorage.getItem('user_settings') || '{}');
+    if (settings.fontFamily) document.body.style.fontFamily = settings.fontFamily;
+    if (settings.fontSize) document.body.style.fontSize = settings.fontSize;
   }, []);
 
   const handleAuthSuccess = () => {
@@ -31,6 +30,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-100">
       {isAdmin ? <AdminMode /> : <UserMode />}
+      <Settings />
     </div>
   );
 }
